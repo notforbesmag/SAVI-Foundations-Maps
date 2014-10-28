@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--Edit the title of the page-->
+    <title>Comparison of Sex Crimes in France (2009, 2011, 2013)</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="css/makeitresponsive.css">
+    <!--Switch between the different themes changing the stylesheet below - light-theme.css |dark-theme.css -->
+    <link rel="stylesheet" href="css/light-theme.css">
+  </head>
+  <body>
+    
+    <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12 context subheader">
+        <!--Link to your personal website, your blog or your twitter account-->
+        <p>Map created by <a href="#">Soudea</a></p>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+
+    <!--In the paragraph below give an introduction to your visualization-->
+    <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12">
+        <h1>Cloropleth Maps of Sex Crimes in France by Region</h1>
+        <p>These maps are an exercise in data visualization. As an anthropologist, quantative data is not a primary focus, but I think it can be important in developing contextual understanding and that visualization, especially mapping, can be a way to turn quantative information into evidence for  inform and further qualitative arguments. Below are 4 maps of France divided by region: 2009 Sex Crime Totals, 2011 Sex Crime Totals, 2013 Sex Crime Totals, and the number of Zones Urbaines Sensibles (Sensitive Urban Zones).</p>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+    
+    <div class="row">
+      <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12 titleBlock">
+        <h3>2009 and 2011</h3>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+      <div class="col span8 map" id="map1"></div>
+      <div class="col span8 map" id="map2"></div>
+      <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12 titleBlock">
+        <h3>2013 and ZUS</h3>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+      <div class="col span8 map" id="map3"></div>
+      <div class="col span8 map" id="map4"></div>
+    </div>
+
+    <!--Copy and paste the "row" div below a second, third, or fourth time to create content blocks-->
+    <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12 titleBlock">
+        <h3>Sources</h3>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+    <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12">
+        <p>Data for the 2009, 2011, and 2013 maps is from the National Institute of Statistics and Economic Studies (INSEE).</p>
+        <p>Data for the Zones Urbaines Sensibles map is from the Secrétariat général du CIV Système d'Information Géographique.</p>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+
+    <!--Play fair and keep the attributions. If you do so, we will love you even more. :)-->
+    <div class="row">
+      <div class="col span2 empty"><p></p></div>
+      <div class="col span12 context footer">
+        <p>Create your maps with ease using <a href="http://cartodb.com">CartoDB</a></p></p>
+      </div>
+      <div class="col span2 empty"><p></p></div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&v=3.8"></script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+
+    <!--Change the URL's below in order to change the maps that are being shown.
+        map1 is the one on the left side and map2 is the one on the right side.
+        Go to your map view in CartoDB, click on share, and copy the URL under the API section
+        Check the cartodb.js documentation for more info
+        http://developers.cartodb.com/documentation/cartodb-js.html-->
+    <script type="text/javascript">
+      var map1,map2,map3,map4;
+
+      cartodb.createVis('map1', 'http://soudea.cartodb.com/api/v2/viz/b39b92ae-4ff8-11e4-879e-0e853d047bba/viz.json')
+      .done(function(vis, layers) {
+        map1 = vis.mapView.map;
+        cartodb.createVis('map2', 'http://soudea.cartodb.com/api/v2/viz/c0f4781c-4ff8-11e4-b7b7-0e018d66dc29/viz.json')
+        .done(function(vis, layers) {
+          map2 = vis.mapView.map;
+        cartodb.createVis('map3', 'http://soudea.cartodb.com/api/v2/viz/c0f4781c-4ff8-11e4-b7b7-0e018d66dc29/viz.json')
+        .done(function(vis, layers) {
+            map3 = vis.mapView.map;
+             cartodb.createVis('map4', 'http://soudea.cartodb.com/api/v2/viz/05d84aa0-4ffc-11e4-9f3d-0e4fddd5de28/viz.json')
+            .done(function(vis, layers) {
+            map4 = vis.mapView.map;
+            map1.on('change:zoom change:center', function(e) {
+              changeMapState(map1, map2, map3, map4);
+            });
+            map2.on('change:zoom change:center', function(e) {
+              changeMapState(map2, map3, map3, map4);
+            });
+            map3.on('change:zoom change:center', function(e) {
+              changeMapState(map2, map1, map3, map4);
+            });
+            map4.on('change:zoom change:center', function(e) {
+              changeMapState(map2, map1, map3, map4);
+            });
+            });
+        })
+      })
+    })
+
+      //Applies the same view from src to tgt map
+      function changeMapState(src,tgt){
+        tgt.set({
+            'center': src.get('center'),
+            'zoom': src.get('zoom')
+        });
+      }
+
+    </script>
+
+  </body>
+</html>
